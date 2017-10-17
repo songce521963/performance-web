@@ -1,8 +1,8 @@
 export default [
   {
     'title': 'ID',
+    type: 'index',
     'width': 80,
-    'key': 'id',
     'align': 'center'
   },
   {

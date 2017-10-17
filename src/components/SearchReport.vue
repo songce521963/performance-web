@@ -37,7 +37,7 @@
     </Form>
     <Row>
       <Col span="24">
-      <Button type="primary" v-bind:disabled="total==0"  size="large" @click="exportData()"
+      <Button type="primary" v-bind:disabled="tableData.length==0"  size="large" @click="exportData()"
               style="float:right;">
         <Icon type="ios-download-outline"></Icon>
         导出数据
@@ -50,10 +50,7 @@
       </Col>
     </Row>
     <br>
-    <Table :columns="tableTitle" :data="tableData" stripe="true" size="small" ref="table"></Table>
-    <br/>
-    <Page v-if="total>0" :total="total"  :page-size-opts="pageSizeOpts" :page-size="pageSize" :current="current" v-on:on-change="onChange"
-          v-on:on-page-size-change="onPageSizeChange" show-sizer :style="pageStyle" show-total></Page>
+    <Table :columns="tableTitle" :height="600" :data="tableData" stripe="true" size="small" ref="table"></Table>
   </div>
 </template>
 
@@ -69,36 +66,19 @@
         },
         tableTitle: tableTitle,
         tableData: [],
-        pageSizeOpts: [10, 20, 50, 100],
-        total: 0,
-        pageSize: 10,
-        current: 1,
         options1: {
           disabledDate (date) {
             return date && date.valueOf() > Date.now()
           }
-        },
-        pageStyle: {
-          float: 'right'
         }
       }
     },
     methods: {
-      onChange (current) {
-        this.current = current
-        this.getReportData()
-      },
-      onPageSizeChange (pageSize) {
-        this.pageSize = pageSize
-        this.getReportData()
-      },
       handelSearch () {
         this.current = 1
         this.getReportData()
       },
       getReportData () {
-        this.searchParams.start = (this.current - 1) * this.pageSize
-        this.searchParams.end = this.pageSize
         const [starDate, endDate] = this.searchParams.dateRange
         if (starDate && endDate) {
           this.searchParams.startDateStr = starDate

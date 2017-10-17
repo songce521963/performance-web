@@ -36,7 +36,7 @@
     <div style="background:#eee;padding: 10px">
       <Card :bordered="false">
         <p slot="title">数据预览</p>
-        <Table :stripe="true" :height="520" :columns='tableTitle' :data='tableData' size='small' ref='table'></Table>
+        <Table :height="520" stripe="true" :columns='tableTitle' :data='tableData' size='small' ref='table'></Table>
       </Card>
     </div>
   </div>
