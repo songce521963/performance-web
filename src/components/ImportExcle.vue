@@ -3,7 +3,7 @@
     <div class="layout-breadcrumb">
       <Breadcrumb>
         <BreadcrumbItem href="#">首页</BreadcrumbItem>
-        <BreadcrumbItem>CSV上传</BreadcrumbItem>
+        <BreadcrumbItem>Excle上传</BreadcrumbItem>
       </Breadcrumb>
     </div>
     <br/>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import tableTitle from './import-table-title-config'
+  import tableTitle from '../table-title/import-table-title-config'
   import * as APi from '../api'
 
   export default {
@@ -51,20 +51,20 @@
       return {
         disabled: true,
         tableTitle: tableTitle,
-        tableData: []
+        tableData: [],
+        file: {}
       }
     },
     methods: {
       handleSuccess (res) {
         if (res.resultCode === 'OK') {
           this.tableData = res.result
-          this.tableData.forEach((data, index) => {
-            data.id = index + 1
-          })
           this.disabled = false
         } else {
+          this.$refs.upload.fileList = []
+          this.tableData = []
           this.$Notice.error({
-            title: `上传文件内容不正确`,
+            title: `上传失败`,
             desc: res.errorMessage
           })
         }
@@ -79,6 +79,7 @@
           title: '文件格式不正确',
           desc: '文件 ' + file.name + ' 格式不正确，请上传 .xlsx 格式的图片。'
         })
+        this.$Spin.hide()
       },
       handleBeforeUpload () {
         const check = this.$refs.upload.fileList.length < 1
@@ -109,9 +110,11 @@
         })
       },
       postData () {
-        APi.importDate(this.tableData).then(res => {
+        APi.importReportData(this.tableData).then(res => {
           if (res.data.resultCode === 'OK') {
-            this.$Notice.success({title: '上传成功', desc: '恭喜您,上传成功！^_^ '})
+            this.$Notice.success({title: '上传成功', desc: '恭喜您,上传成功 ^_^ ！'})
+            this.$refs.upload.fileList = []
+            this.tableData = []
             this.disabled = true
           } else {
             this.$Notice.error({
@@ -124,7 +127,7 @@
           console.log(error)
           this.$Notice.error({
             title: '上传失败',
-            desc: '系统异常，请联系管理员！(ˇ^ˇ) '
+            desc: '系统异常，请联系管理员 (ˇ^ˇ) ！'
           })
           this.$Spin.hide()
         })

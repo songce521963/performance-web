@@ -1,15 +1,15 @@
 <template>
   <div class="layout">
-    <Menu mode="horizontal" theme="dark" active-name="1">
+    <Menu mode="horizontal" v-on:on-select="onSelect" theme="dark" active-name="index">
       <div class="layout-logo"></div>
       <div class="layout-nav">
-        <MenuItem name="1">
+        <MenuItem name="index">
           <Icon type="upload"></Icon>
-          <span @click="toPage('index')">CSV上传</span>
+          <span>CSV上传</span>
         </MenuItem>
-        <MenuItem name="2">
+        <MenuItem name="searchReport">
           <Icon type="search"></Icon>
-          <span @click="toPage('searchReport')">查看报表</span>
+          <span>查看报表</span>
         </MenuItem>
       </div>
     </Menu>
@@ -22,7 +22,7 @@
 <script>
   export default {
     methods: {
-      toPage (pageName) {
+      onSelect (pageName) {
         this.$router.push({name: pageName})
       }
     }
@@ -42,7 +42,7 @@
   .layout-logo {
     width: 100px;
     height: 30px;
-    background: #5b6270;
+    background: url(./assets/logo.png) 0 0 no-repeat;
     border-radius: 3px;
     float: left;
     position: relative;
