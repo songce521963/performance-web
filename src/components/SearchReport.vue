@@ -11,7 +11,7 @@
       <Row>
         <Col span="6">
         <FormItem label="拓展时间">
-          <DatePicker type="daterange" :options="options1" v-model="searchParams.dateRange" placement="bottom"
+          <DatePicker type="daterange" :options="options1" v-model="searchParams.expandTimeRange" placement="bottom"
                       placeholder="请选择拓展时间"
                       style="width: 100%"></DatePicker>
         </FormItem>
@@ -30,7 +30,7 @@
       <Row>
         <Col span="6">
         <FormItem label="日期">
-          <DatePicker type="date" :options="options1" v-model="searchParams.date" placement="bottom"
+          <DatePicker type="daterange" :options="options1" v-model="searchParams.dateRange" placement="bottom"
                       placeholder="请选择日期"
                       style="width: 100%"></DatePicker>
         </FormItem>
@@ -44,7 +44,7 @@
     </Form>
     <Row>
       <Col span="24">
-      <Button type="primary" v-bind:disabled="tableData.length==0"  size="large" @click="exportData()"
+      <Button type="primary" v-bind:disabled="tableData.length==0" size="large" @click="exportData()"
               style="float:right;">
         <Icon type="ios-download-outline"></Icon>
         导出数据
@@ -57,7 +57,7 @@
       </Col>
     </Row>
     <br>
-    <Table :columns="tableTitle" :height="600" :data="tableData"  :stripe="true" size="small" ref="table"></Table>
+    <Table :columns="tableTitle" :height="600" :data="tableData" :stripe="true" size="small" ref="table"></Table>
   </div>
 </template>
 
@@ -69,7 +69,7 @@
     data () {
       return {
         searchParams: {
-          dateRange: [this.getDateStr(-30), this.getDateStr(0)]
+          expandTimeRange: [this.getDateStr(-30), this.getDateStr(0)]
         },
         tableTitle: tableTitle,
         tableData: [],
@@ -86,10 +86,13 @@
         this.getReportData()
       },
       getReportData () {
-        const [starDate, endDate] = this.searchParams.dateRange
-        if (starDate && endDate) {
-          this.searchParams.startDateStr = starDate
-          this.searchParams.endDateStr = endDate
+        const [startExpandTime, endExpandTime] = this.searchParams.expandTimeRange
+        const [startDate, endDate] = this.searchParams.dateRange
+        if (startExpandTime && endExpandTime) {
+          this.searchParams.startExpandTimeStr = startExpandTime
+          this.searchParams.endExpandTimeStr = endExpandTime
+          this.searchParams.startDate = startDate
+          this.searchParams.endDate = endDate
           this.$Spin.show()
           APi.getReportData(this.searchParams).then(res => {
             if (res.data.resultCode === 'OK') {
