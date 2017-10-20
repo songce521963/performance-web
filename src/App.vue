@@ -31,7 +31,7 @@
 
 <style>
   .ivu-spin-fix {
-    background-color: rgba(55, 55, 55, .6);
+    background-color: rgba(55, 55, 55, .6) !important;
   }
 
   .layout {

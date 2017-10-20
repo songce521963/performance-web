@@ -2,7 +2,7 @@ export default [
   {
     'title': 'ID',
     type: 'index',
-    'width': 80,
+    'width': 70,
     'align': 'center'
   },
   {
